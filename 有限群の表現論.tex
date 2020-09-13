@@ -1,0 +1,1011 @@
+%%% ---- スライドの場合 (start) remove comment out
+\documentclass[usepdftitle=true,dvipdfmx,8pt]{beamer}
+\usetheme{Copenhagen} % テーマは指定しなくともよい.
+\renewcommand{\kanjifamilydefault}{\gtdefault}% 既定をゴシック体に
+\newcommand*{\kougi}{スライド}   % kougi is slide
+
+\usefonttheme{professionalfonts}
+\usepackage[dvipdfmx]{}
+\usepackage[usenames]{}
+\hypersetup{%
+ bookmarksnumbered=true,%
+ colorlinks=true,%
+ setpagesize=false,%
+ pdftitle={有限群の表現論},%
+ pdfauthor={adhara_mathphys},%
+ pdfsubject={まとめスライド},%
+ pdfkeywords={ representation theory; 表現論; 有限群}}
+\usepackage{bxdpx-beamer}% dvipdfmxなので必要
+\usepackage{pxjahyper}% 日本語で'しおり'したい
+\usepackage{minijs}% min10ヤダ
+\usepackage[utf8]{inputenc}
+\usepackage[ipaex]{pxchfon}
+\usepackage{amsmath,amssymb,amsthm,epic,eepic,multicol,ascmac}
+%%%  ---- スライドの場合 (stop)
+\usepackage{ifthen}
+
+%% 自分で定義したマクロ
+\newcommand{\Sigmat}{\mbox{\boldmath\ensuremath{\Sigma}}}
+\newcommand{\evec}{\mbox{\boldmath\ensuremath{e}}}
+\newcommand{\ovec}{\mbox{\boldmath\ensuremath{0}}}
+\newcommand{\xvec}{\mbox{\boldmath\ensuremath{x}}}
+\newcommand{\R}{{\rm I\!R}}
+\newcommand{\e}{{\rm e}}
+\newcommand{\dr}{{\rm d}}
+\newcommand{\E}{{\mathbb E}}
+\newcommand{\p}{{\mathbb P}}
+\newcommand{\V}{{\mathbb V}}
+\theoremstyle{plain}
+\usepackage{wrapfig}
+\newcommand{\divergence}{\mathrm{div}\,}  %ダイバージェンス
+\newcommand{\grad}{\mathrm{grad}\,}  %グラディエント
+\newcommand{\rot}{\mathrm{rot}\,}  %ローテーション
+
+\newcommand{\backupbegin}{
+   \newcounter{framenumberappendix}
+   \setcounter{framenumberappendix}{\value{framenumber}}
+}
+\newcommand{\backupend}{
+   \addtocounter{framenumberappendix}{-\value{framenumber}}
+   \addtocounter{framenumber}{\value{framenumberappendix}} 
+}
+
+
+
+\uselanguage{japanese}
+\languagepath{japanese}
+\deftranslation[to=japanese]{Theorem}{定理}
+\deftranslation[to=japanese]{Lemma}{補題}
+\deftranslation[to=japanese]{Example}{例}
+\deftranslation[to=japanese]{Examples}{例}
+\deftranslation[to=japanese]{Definition}{定義}
+\deftranslation[to=japanese]{Corollary}{系}
+\deftranslation[to=japanese]{Definitions}{定義}
+\deftranslation[to=japanese]{Problem}{問題}
+\deftranslation[to=japanese]{Solution}{解}
+\deftranslation[to=japanese]{Fact}{事実}
+\deftranslation[to=japanese]{Proof}{証明}
+\def\proofname{証明}
+\makeatletter
+\newenvironment<>{proofs}[1][\proofname]{%
+       \par
+       \def\insertproofname{#1\@addpunct{.}}%
+       \usebeamertemplate{proof begin}#2}
+     {\usebeamertemplate{proof end}}
+\makeatother
+
+\begin{document}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\title{\bfseries 有限群の表現論}
+\subtitle{\bfseries まとめスライド} 
+\author{ \href{https://twitter.com/adhara_mathphys}{伊藤 祐斗} }
+\date[]{\today}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\ifthenelse{\equal{\kougi}{スライド}}{%
+% ---- タイトルと目次、スライドの場合 (start) 
+\begin{frame}
+ \titlepage 
+\end{frame}
+
+\begin{frame}<beamer>
+  \frametitle{目次}
+  \tableofcontents[] 
+%  \tableofcontents[hideothersubsections] % hide subsection
+\end{frame}
+% ---- タイトルと目次、スライドの場合 (stop)   
+}
+{%else
+% ---- タイトルと目次、ハンズアウトの場合 (start) 
+\maketitle
+\setcounter{tocdepth}{3}
+\tableofcontents[] 
+% ---- タイトルと目次、ハンズの場合 (stop) 
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{はじめに}
+\begin{frame}{目的}
+本文書では有限群の表現論についてまとめる。
+\end{frame}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{群の表現論}
+\begin{frame}
+\frametitle{群の作用}
+群$G$と集合$X$を考える。
+\begin{definition}
+写像$f:G\times X \to X$に対して、次の条件が満たされている時、
+$G$は$X$に作用する、という。
+\begin{enumerate}
+\item $e\in G$を単位元として、$f(e,x) = x,  \forall x \in X$
+\item $f(g,f(g',x)) = f(gg' , x), \forall x \in X, \forall g,g' \in G$
+\end{enumerate}
+\end{definition}
+\begin{definition}
+$\forall x,x' \in X$に対して、$gx = x'$となる$g\in G$が存在する時、
+$G$の$X$への作用が推移的であるという。
+
+$\forall x \in X$に対して$gx = x$となるような$g\in G$が単位元に限られるとき、
+$G$の$X$への作用が効果的であるという。
+
+$x \in X$に対して、$G_x = {g\in G | gx = x}$を$ x$の固定部分群（stabilizer）という。
+
+$\forall x \in X$に対して、$G_x = \{e\}$となる時、$G$の$X$への作用が自由であるという。
+\end{definition}
+\end{frame}
+
+\begin{frame}
+\frametitle{群の表現}
+群$G$は一般の群とし、$V$は体$K$上のベクトル空間とする。
+\begin{definition}
+写像$\pi$が群$G$から群$\mathrm{GL}(V)$への群準同型となっているとき、
+組$(\pi,V)$を$G$の表現（representation）であるという。
+このとき、$V$は表現空間と呼ばれる。
+表現の次元とは$\mathrm{dim}(V)$のことである。
+$\mathrm{dim}(V)$が有限である表現を有限次元表現という。
+表現$(\pi_1,V_1)$と$(\pi_2,V_2)$が等価な表現であるとは、
+$V_1$と$V_2$が$G$同型であることを指す。
+\end{definition}
+表現は作用の特別な場合である。
+\begin{definition}
+$\varphi$が$V_1$から$V_2$への$G$準同型とは、
+$V_1\rightarrow V_2$の線形写像であり、
+\begin{align*}
+\rho_2(g)\varphi(v_1)=\varphi(\rho_1(g) v_1) \ (g\in G, v_1\in V_1)
+\end{align*}
+を満たすもののことである。
+$V_1$から$V_2$への$G$準同型の集合を$\mathrm{Hom}_G(V_1,V_2)$と書く。
+$V$から$V$への$G$準同型を自己$G$準同型というが、
+自己$G$準同型は$\mathrm{End}_G(V)$と書かれる。
+$\mathrm{End}_G(V) := \mathrm{Hom}_G(V,V)$である。
+$\varphi$が全単射のとき$G$同型写像であるという。
+$V_1\rightarrow V_2$の$G$同型写像が存在するとき、
+$V_1$と$V_2$は$G$同型であるという。
+\end{definition}
+\end{frame}
+
+\begin{frame}
+\frametitle{$G$不変部分空間}
+群$G$の表現$(\pi,V)$を考える。
+\begin{definition}
+表現空間$V$の部分空間$W$（$W\subset V$）が$G$不変である
+（あるいは$G$の作用に対して固定される）とは、
+$\forall g \in G, \forall w \in W, \pi(g)w \in W$が成立することである。
+\end{definition}
+表現空間$V$の部分空間$W$が$G$不変であるとき、
+各$g\in G$に対して
+$\pi(g)$が作用するベクトル空間を
+$W$に制限した線形写像$\pi|_W(g) (\in \mathrm{GL}(W))$
+を考えることが出来る。
+このとき、$\pi|_W$を$G$から$\mathrm{GL}(W)$
+への準同型写像と考えることが出来る。
+すなわち、$(\pi|_W,W)$は$G$の表現である。
+\begin{definition}
+$(\pi_W,W)$は$(\pi,V)$の部分表現である、あるいは$\pi|_W$は$\pi$の部分表現である
+という。
+\end{definition}
+\end{frame}
+
+\begin{frame}
+\frametitle{既約表現と可約表現}
+群$G$の表現$(\pi,V)$を考える。
+\begin{definition}
+$V$の$G$不変部分空間が自明なもの
+（すなわち$\{0\}$と$V$自身）に限られるとき、
+$(\pi,V)$は既約表現（irreducible representation）である、という。
+さらに$\pi$が既約表現である、$V$が既約部分空間である、という。
+\end{definition}
+環論の言葉を用いると、表現は$KG$環上の加群を考えることに相当するが、
+既約表現に相当するのは、$KG$単純加群である。
+\begin{definition}
+既約表現でない表現を可約表現（reducible representation）という。
+\end{definition}
+
+\end{frame}
+
+\begin{frame}
+\frametitle{極大部分表現と既約表現}
+既約表現の別の捉え方として極大部分表現を用いることができる。
+\begin{definition}
+$(\pi,V)$の部分表現$(\pi|_W,W)$について、
+$W$を含むような$V$の$G$不変部分空間が$V$と$W$以外にないとき、
+$W$は$V$の極大$G$不変部分空間であるという。
+また、$(\pi|_W,W)$は$(\pi,V)$の極大部分表現である、という。
+\end{definition}
+この定義に依れば$V$自体は$V$の自明な極大$G$不変部分空間である。
+また$(\pi,V)$が既約であれば$\{0\}$も$V$の極大$G$不変部分空間である。
+極大$G$不変部分空間が自明表現に限られる表現が既約表現である、
+ということができる。
+\end{frame}
+
+\begin{frame}
+\frametitle{直和表現}
+群$G$に対して表現を複数組み合わせることで、
+直和表現というものを構成することができる。
+\begin{definition}
+$(\pi_i,V_i)\ \ (i=1,2,\cdots,l)$をそれぞれ$G$の表現とする。
+直和ベクトル空間$V=\sum_{i=1}^l V_k$を考える。
+（直和の定義により、任意の元$v\in V$に対して
+$v=v_1+v_2+\cdots v_l$となる
+$v_1\in V_1,v_2\in V_2,\cdots,v_l\in V_l$
+が一意に存在する。）
+このとき、
+\begin{align*}
+\pi(g)(v):=\pi_1(g)(v_1)+ \cdots \pi_2(g)(v_2) + \cdots \pi_l(g)(v_l)
+\end{align*}
+によって、群準同型$\pi:G\rightarrow GL(V)$を定義すると、
+$(\pi,V)$も$G$の表現となるが、
+このことを表現$\pi$が表現$\pi_1,\pi_2,\cdots,\pi_l$の直和となっている、
+という。
+\end{definition}
+上の定義だと有限の直和表現であったが、無限の直和表現も考えることが可能である。
+\end{frame}
+
+\begin{frame}
+\frametitle{完全可約表現}
+\begin{definition}
+表現$(\pi,V)$が完全可約（completely reducible）であるとは、
+$\pi$が既約表現の直和表現になることを言う。
+\end{definition}
+注意点として、定義によれば既約表現自体も完全可約表現である。
+加群の言葉を用いると半単純加群（semisimple module）に対応する。
+\end{frame}
+
+\begin{frame}
+\frametitle{商ベクトル空間}
+$W$を$V$の部分空間、$W'$を$W$の部分空間とする。
+
+$w_1,w_2\in W$に対して、$w_1\sim w_2 \iff w_1-w_2 \in W'$で
+同値関係（equivalence relation）を定義する。
+この同値関係で定まる$w\in W$の
+同値類（coset）は$\{ w + z | z \in W' \}$であるがこれを$w+W'$と記す。
+この同値関係で定まる$W$の商集合（quotient set）を$W/W'$で表す。
+すなわち、
+\begin{align*}
+W/W' = \{ w + W' | w \in W \}
+\end{align*}
+である。
+
+$w_1+W' , w_2+W' \in W/W'$に対して
+$(w_1+W') + (w_2+W') = (w_1+w_2) + W' $
+とするように和演算を定義することが出来る。
+また$a\in K, w \in W$に対して
+$a(w+W')=aw + aW' = aw + W'$
+とするようにスカラー倍を定義することが出来る。
+スカラー倍と和演算について閉じているので
+$W/W'$はベクトル空間と見なせる。
+\begin{definition}
+$W/W'$を商ベクトル空間という。
+\end{definition}
+\end{frame}
+
+
+\begin{frame}
+\frametitle{部分商表現と商表現}
+$G$の表現$(\pi,V)$に対して、
+$W$を$V$の$G$不変部分空間、
+$W'$を$W$の$G$不変部分空間とすると、
+$W'$は$V$の不変部分空間である。
+
+商ベクトル空間$W/W'$に対する表現を
+$(\pi|_W,W),(\pi|_{W'},W')$から構成することが出来る。
+任意の$w+W' \in W/W'$、任意の$g\in G$に対して、
+次の性質を満たす群準同型$\pi|_{W/W'}: g \rightarrow GL(W/W')$を定義できる。
+\begin{align*}
+\pi|_{W/W'}(g)(w+W') =( \pi|_{W}(g)(w) )+ W'
+\end{align*}
+$W,W'$が$G$不変部分空間であることからwell-definedである。
+\begin{definition}
+組$(\pi|_{W/W'},W/W')$を$(\pi,V)$の部分商表現という。
+とくに$W=V$であるときは$(\pi,V)$の商表現と呼ばれる。
+\end{definition}
+$\pi|_{V/V}$といった自明な（部分）商表現もあるが、商表現といったときにはこれを含めないこととする。
+\end{frame}
+
+\begin{frame}
+\frametitle{重要な定理}
+\begin{Lemma}
+群$G$の有限次元表現$(\pi,V)$を考える。このとき$\pi$には既約な部分表現が存在する。
+\end{Lemma}
+\begin{proof}
+$(\pi,V)$が既約ならばその時点で証明終了。
+$(\pi,V)$が可約であるとする。
+可約なので$V$の$G$不変部分空間$W_1$が存在して$W_1\neq \{0\},V$である。
+$(\pi|_{W_1},W_1)$が既約ならばその時点で終了。
+$(\pi|_{W_1},W_1)$が可約ならば$W_1$の$G$不変部分空間$W_2$が存在して$W_2\neq \{0\},V$である。
+このとき$\mathrm{dim}(W_2)<\mathrm{dim}(W_1)<\mathrm{dim}(V)$である。
+$\mathrm{dim}(V)$が有限なのでこのようにしてできる$G$不変部分空間の列には終わりがある。
+すなわちある$k$が存在し、$G$不変部分空間の列
+$\{0\}\neq W_k \subsetneq W_{k-1} \subsetneq \cdots \subsetneq W_1 \subsetneq V$が
+できる。
+このとき$(\pi|_{W_k},W_k)$が既約表現である。
+\end{proof}
+\end{frame}
+
+
+
+\begin{frame}
+\frametitle{重要な定理}
+\begin{Lemma}
+群$G$の表現$(\pi,V)$の部分表現$(\pi|_W,W)$を考える。
+これらの表現により定まる商表現$(\pi|_{V/W},V/W)$の部分表現は、
+$W$を含む$V$の$G$不変部分空間$X$を用いて、$(\pi|_{X/W},X/W)$
+と表すことが出来る。
+商表現$(\pi|_{V/W},V/W)$の部分表現と$W$を含む$V$の$G$不変部分空間は
+一対一対応する。
+\end{Lemma}
+\begin{proof}
+$V/W$の$G$不変部分空間$U$を考える。
+この$U$に対して$V$の部分空間
+$X=\{x\in V | x + W \in U \}$
+を考える。
+このとき$X$は$V$の$G$不変部分空間であることが分かる。
+また$X$が$W$を$G$不変部分空間として持つことも分かる。
+さらに$U=X/W$であることも分かる。
+逆に$V$の$G$不変部分空間で$W$を含むものを$X$としたとき、
+$X/W$が$V/W$の$G$不変部分空間であることが示せる。
+したがって一対一対応が示せた。
+\end{proof}
+\begin{corollary}\label{CMR}
+群$G$の表現$(\pi,V)$の部分表現$(\pi|_W,W)$が極大であることと
+商表現$(\pi|_{V/W},V/W)$が既約であることは同値。
+\end{corollary}
+\end{frame}
+
+\begin{frame}
+\frametitle{有限生成表現}
+有限次元表現とは限らないが、ある種の有限性を持つ表現として有限生成表現がある。
+\begin{definition}
+有限個の元$v_1,v_2,\cdots,v_m \in V$が存在して、
+$V=\mathrm{Span} \{ \pi(g)v_j | 1 \le j \le m , g \in G\}$と書けるとき、
+$G$の表現$(\pi,V)$が有限生成である、という。
+$v_1,v_2,\cdots,v_m$を生成元と呼ばれる。
+\end{definition}
+\end{frame}
+
+\begin{frame}
+集合論の定理としてZornの補題がある。
+\begin{Lemma}（$\mathrm{Zorn}$の補題）
+$\mathcal{S}$を空ではない順序集合とする。$\mathcal{S}$の任意の全順序部分集合が$\mathcal{S}$において
+上界をもつならば、$\mathcal{S}$は極大元（順序関係によると比較をしたときそれより大きな元をもたないもの）をもつ。
+\end{Lemma}
+これを用いると以下の補題を示せる。
+\begin{Lemma}
+群$G$の表現$(\pi,V)$に対して次の二項目が成立する。
+\begin{enumerate}
+\item $\pi$が有限生成ならば$\pi$は既約な商表現をもつ。
+\item $\pi$は既約な部分商表現をもつ。
+\end{enumerate} \label{LQR}
+\end{Lemma}
+\end{frame}
+\begin{frame}
+\begin{proof}
+（1）$(\pi,V)$を有限生成表現とする。
+$V$のすべての$G$不変の真部分空間の集合$\mathcal{W}$を考える。
+$\mathcal{W}$は空ではない。
+また$\mathcal{W}$においては包含関係によって順序を定めることが出来るので
+$\mathcal{W}$は順序集合である。
+$\mathcal{W}$に属する任意の全順序集合$\mathcal{W'}$を考える。
+全順序集合なので$\mathcal{W'}$の全要素$W_1',W_2',\cdots$は
+$W_1'\subset W_2' \subset \cdots$のように順序関係の列を構成する。
+和空間$\cup_{k\ge1 }W_k'$を考えるとこれは$V$の真部分空間
+でなくてはならない。
+（$\cup_{k\ge1 }W_k'=V$と仮定する。$V$は有限生成なのである$n$が存在し、
+$W'_n$はすべての$V$の生成元を含む。すなわち$W'_n=V$となる。
+これは$W'_n\in W$であることと矛盾。）
+したがって$\cup_{k\ge1 }W_k'$は全順序集合$\mathcal{W'}$における上界である。
+$\mathcal{W'}$は任意であったからZornの補題より
+$\mathcal{W}$には極大元$W_0$が存在し、
+これは非自明な（$V$ではないという意味）極大の$G$不変の真部分空間である。
+系\ref{CMR}より$(\pi_{V/W},V/W)$は既約な部分商表現である。\\
+（2）$V$に属するゼロでない元を一つ選び$v$とする。
+$v$を生成元とする$V$の$G$不変部分空間$W:=\mathrm{Span}\{\pi(g)v| g \in G\}$
+について（1）を適用すればよい。
+\end{proof}
+\end{frame}
+
+\begin{frame}
+\begin{lemma}
+群$G$の表現$(\pi,V)$に既約な部分表現が存在すると仮定する。
+このとき次の二項目は同値である。
+\begin{enumerate}
+\item $(\pi,V)$は完全可約である。
+\item $V$の任意の$G$不変の部分空間$W$に対して、
+$$
+W\oplus W' = V
+$$
+\end{enumerate}
+を満たす$G$不変の部分空間$W'$が存在する。
+\end{lemma}
+\end{frame}
+
+\begin{frame}
+\begin{proofs}
+（$1\rightarrow2$）$\pi$を完全可約であるとする。
+$\pi$が既約ならばその時点で証明終了。$\pi$を可約とする。
+$W(\neq \{0\},V)$を$G$不変の部分空間とする。
+$\pi$は完全可約なので$V$の$G$不変部分空間$U$が存在し$U\cap W=\{0\}$となる。
+このような性質を持つ部分空間の集合$\mathcal{U}$を考える。
+$\mathcal{U}$は空ではなく、要素同士の和操作について閉じている
+（要するに$U_1,U_2\in\mathcal{U}$ならばその和空間も$\mathcal{U}$に属する）。
+したがってZornの補題により要素同士の和操作に関して極大となる、$\mathcal{U}$の要素が存在する。
+極大となる要素の一つを$U_0$とする。
+$W\cap U_0 = \{0\}$なので両者の直和を考えることができる。ここで$W\oplus U_0 \neq V$と仮定する。
+$\pi$は完全可約であったので$V$のある$G$不変部分空間$U'$が存在し$U' \not\subset W\oplus U_0$となり
+かつ$(\pi|_{U'},U')$が既約となる。
+ここで$A=U'\cap(W\oplus U_0)\neq\{0\}$とする（$A$は$U'$の真部分空間となる）。
+$U'$と$W\oplus U_0$がそれぞれ$G$不変なので
+$a\in A$のとき任意の$g\in G$に対して$\pi(g)a \in U'$かつ$\pi(g)a \in W\oplus U_0$
+、すなわち$\pi(g) a \in A$となる。すなわち$A$は$G$不変の$U'$の真部分空間である。
+これは$U'$が既約部分空間であることに反する。
+したがって$A=U'\cap(W\oplus U_0)=\{0\}$となる。
+すなわち$U'\cap W=\{0\}$であり$U' \in \mathcal{U}$となる。
+一方$U' \not\subset U_0$であった。これは$U_0$が極大であったことに反する。
+($U'+U_0 \in \mathcal{U}$は$U_0$を真部分集合として含む）
+\end{proofs}
+\end{frame}
+
+\begin{frame}
+\begin{proof}
+（$2\rightarrow1$）
+2が成立しているとする。
+既約部分空間$W_1$が存在する。
+$W^{(1)}=W_1$とする。
+さらに$W_1$と直交する既約部分空間$W_2$が
+存在するとき、
+$W^{(2)}=W^{(1)} \oplus W_2$
+とする。
+さらに$W_1$とも$W_2$とも直交する既約部分空間$W_3$が存在するとき、
+$W^{(3)}=W^{(2)} \oplus W_2$
+とする。
+このようにして既約部分空間の直和の列$W^{(1)}\subset W^{(2)} \subset W^{(3)} \subset \cdots \subset V$
+を考えることが出来る。
+Zornの補題を適用すると、この列には極大が存在する。この極大を$W$とする。
+$W$は既約部分空間の直和なので$G$不変部分空間である。
+したがって仮定（2）より不変部分空間$U$が存在し、
+$W\oplus U = V$である。
+$U=\{0\}$であればその時点で証明終了。
+$U\neq\{0\}$とする。
+補題\ref{LQR}を用いると、
+不変$G$部分空間の包含関係
+$U\supset U_1 \supset U_2$を満たす
+$U_1,U_2$が存在し、$\pi|_{U_1/U_2}$は既約となる。
+$W\oplus U_2$は$V$の$G$不変部分空間であるが、
+仮定（2）よりその補集合$U_3$も$G$不変である。（$U_3 \subset U$である。）
+したがって$\pi|_{U_3},\pi|_{V/(W\oplus U_2)},\pi|_{U/U_2}$といった表現は
+等価である（$W,U,V,U_2,U_3$がすべて$G$不変なので）。
+とくに$\pi|_{U_1/U_2}$は$\pi|_{U/U_2}$の既約部分表現である。
+$\pi|_{U_3}$と$\pi|_{U/U_2}$が等価であることから$(\pi|_{U_3},U_3)$の
+既約部分表現$(\pi|_{U_4},U_4)$が存在することが分かる（$U_4$は$U_3$の不変部分空間）。
+これは$W$の極大性に反する。
+したがって$U=\{0\}$である。
+\end{proof}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{群のユニタリ表現}
+\begin{frame}
+\frametitle{群のユニタリ表現}
+表現空間が内積空間である場合がある。
+とくに内積が群（の表現としての線形写像）が作用しても保たれて欲しい場合がある。
+このような性質をみたす表現をユニタリ表現と言う。
+内積の正定値性が意味を持つために$K=\boldsymbol R$または$K=\boldsymbol C$とする。
+
+群$G$の表現$(\pi,V)$を考える。
+\begin{definition}
+$(\pi,V)$が有限次元表現で$V$が内積空間であるとする。
+ある内積$\langle , \rangle$が存在して
+\begin{align*}\forall v_1,v_2\in V, \forall g \in G: \langle\pi(g) v_1,\pi(g)v_2\rangle = \langle v_1,v_2\rangle
+\end{align*}
+となるとき、この表現をユニタリ表現であるという。
+\end{definition}
+
+無限次元の内積空間もある。
+このときは上記と同様の定義の条件を満たす表現を前ユニタリ表現という。
+内積より定まるノルムに関して完備であるときは$V$はヒルベルト空間となるが、
+このときの前ユニタリ表現をユニタリ表現という。
+\end{frame}
+
+\begin{frame}
+\frametitle{ユニタリ表現の行列表示}
+$V$をベクトル空間として$A$を$V$における線形写像とする（$A\in \mathrm{End}(V)$）。
+$A$の随伴写像$A^\dagger$とは
+任意の$v,w\in V$に対して
+$\langle A v ,w \rangle = \langle v, A^\dagger w \rangle$
+となる$V$における線形写像である。
+上記の定義より
+$(\pi,V)$がユニタリ表現であることは
+任意の$g\in G$に対して$\pi(g)^* = \pi(g)^{-1} (= \pi(g^{-1}) )$であることと同値である。
+
+$V$が$\boldsymbol C$ベクトル空間であるときは、基底を用いて行列表示すると、
+\begin{align*}
+(A^\dagger)_{ij} = A_{ji}^* 
+\end{align*}
+である。(*は複素共役)
+$A^\dagger$を$A$のエルミート共役という。
+\end{frame}
+
+\begin{frame}
+\frametitle{ユニタリ表現の完全可約性}
+\begin{Lemma}
+$(\pi,V)$が$G$のユニタリ表現で、$W$が$V$の部分空間である。このとき次の二項目は同値。
+\begin{enumerate}
+\item $W$が$G$不変であること。
+\item $W^{\bot}$が$G$不変であること。
+\end{enumerate}
+\end{Lemma}
+
+\begin{proof}
+$W$が$G$不変部分空間である。
+
+$\iff$ $\forall g \in G, \forall w \in W: \pi(g) w \in W$
+
+$\iff$ $\forall g \in G, \forall w \in W, \forall w' \in W^{\bot}: \langle \pi(g) w , w' \rangle = 0$
+
+$\iff$ $\forall g \in G, \forall w \in W, \forall w' \in W^{\bot}: \langle  w , \pi(g^{-1}) w' \rangle = 0$
+
+$\iff$ $\forall g \in G, \forall w \in W, \forall w' \in W^{\bot}: \langle  w , \pi(g) w' \rangle = 0$
+
+$\iff$ $\forall g \in G, \forall w' \in W^{\bot}: \pi(g) w' \in W^{\bot}$
+
+$\iff$ $W^\bot$が$G$不変部分空間である。
+\end{proof}
+\end{frame}
+\begin{frame}
+\frametitle{ユニタリ表現の完全可約性}
+次の系が従う。
+\begin{corollary}
+群$G$の有限次元ユニタリ表現は完全可約である。
+\end{corollary}
+\end{frame}
+
+\begin{frame}
+\frametitle{Schurの補題}
+\begin{Lemma} [Schurの補題]
+$(\pi_1,V_1)$と$(\pi_2,V_2)$をそれぞれ群$G$の既約表現とする。
+任意の$G$準同型$\mathrm{Hom}_G(V_1,V_2)$は同型となるか$0$写像（$\mathrm{Im}A=\{ 0\}$となる写像）である。
+\end{Lemma}
+\begin{proof}
+$A\in \mathrm{Hom}_G(V_1,V_2),A\neq 0$とする。\\
+$g \in G, v_2 \in \mathrm{Im}A \subset V_2,v_2\neq 0$とすると、$A(v_1)=v_2$となる$v_1\in V_1$が存在する。
+$A$は$G$準同型であるから、$A(\pi_1(g)v_1) = \pi_2(g) A(v_1) = \pi_2(g) v_2$が成立し、$\pi_2(g)v_2 \in \mathrm{Im} A$である。
+したがって$\mathrm{Im}A\neq \{ 0\}$は$V_2$の$G$不変部分空間である。
+しかしながら$(\pi_2,V_2)$は既約表現なので自明な不変部分空間しか持たず、$V_2=\mathrm{Im}(A)$、すなわち$A$は全射となる。\\
+さて$v_1' \in \mathrm{Ker}A$とすると$A$は$G$準同型であるから、任意の$g\in G$に対して
+$A(\pi_1(g)v_1') = \pi_2(g) A(v_1') = \pi_2(g) 0 = 0 , \pi_1(g) v_1' \in \mathrm{Ker}A$が成立する。
+すなわち、$\mathrm{Ker}A \in V_1$は$G$不変部分空間である。
+$A\neq 0$より$\mathrm{Ker}A \neq V_1$であり、$(\pi_1,V_1)$が既約であることから、$\mathrm{Ker}A = \{ 0 \}$である。
+すなわち$A$は全単射であり$G$同型であることが示された。
+\end{proof}
+Schur補題で対象とする既約表現は有限次元既約表現に限らない。
+また有限群にも限っていない。
+完全可約表現にも限らない。
+\end{frame}
+
+\begin{frame}
+\frametitle{Schurの補題の系}
+以下、$V$を$\boldsymbol C$上のベクトル空間とする。
+\begin{corollary}
+群$G$の有限次元既約表現$(\pi,V)$に対して、
+$\mathrm{End}_G(V) \simeq \boldsymbol C$である。
+（任意の元$\mathrm{End}_G(V)$が$\lambda \in \boldsymbol C$を用いて$\lambda I_V$と書ける。
+ただし$I_V$は$V\rightarrow V$の恒等写像）
+\end{corollary}
+\begin{proof}
+$A \in \mathrm{End}_G(V)$とする。
+$A$は$V\rightarrow V$の線形写像であり、$V$が有限次元であることと$\boldsymbol C$が代数的閉体であることから、
+少なくとも一つの固有値$\lambda \in \boldsymbol C$をもつこととなる。
+ここで任意の$g \in G, v \in V$に対して
+$(A - \lambda I_V)(\pi(g) v ) = A (\pi(g) v) - \lambda I_V(\pi(g) v) = \pi(g) A (v) - \pi(g) v = \pi(g) (A(v) - v) = \pi(g) (A-\lambda I_V)(v)$
+なので、$A - \lambda I_V \in \mathrm{End}_G(V)$である。
+そして$A - \lambda I_V$は逆行列を持たないので自己同型ではない。
+Schurの補題より$\mathrm{End}_G(V)$の元は自己同型か0写像なので、$A-\lambda I_V$は0写像である。
+すなわち$A = \lambda I_V$である。
+\end{proof}
+\end{frame}
+
+\begin{frame}
+\frametitle{Schurの補題の系}
+アーベル群に対しては次のようなSchurの補題の系が従う。
+\begin{corollary}
+アーベル群$G$の有限次元既約表現$(\pi,V)$に対して$\mathrm{dim}V = 1$である。
+\end{corollary}
+\begin{proof}
+任意の$g,g'\in G, v \in V$に対して
+$\pi(g)(\pi(g') v) = \pi(gg') v = \pi(g' g) v = \pi(g') (\pi(g) v)$となるので、
+$\pi(g) \in \mathrm{End}_G(V)$である。
+したがって上の系よりある$\lambda(g) \in C$が存在し、$\pi(g) = \lambda(g) I_V$である。
+$V$の基底として$e_1,e_2, \cdots , e_{\mathrm{dim}V}$を考える。
+このとき$\{\boldsymbol C e_1 \}$は$V$の$G$不変部分空間である。
+$\mathrm{dim}V > 1$だと自明でない$G$不変部分空間を持つことになり$(\pi,V)$が既約であることに反する。
+したがって$\mathrm{dim}V = 1$である。
+\end{proof}
+\end{frame}
+
+\begin{frame}
+\frametitle{Schurの補題の逆}
+完全可約で各既約成分が有限次元となる表現に対しては、Schurの補題だけではなくSchurの補題の逆も成立する。
+\begin{Lemma}
+群$G$のが完全可約表現$(\pi,V)$の各既約成分が有限次元であるとき、以下の項目は同値である。
+\begin{enumerate}
+\item $(\pi,V)$は既約表現である。
+\item $\mathrm{End}_G(V) \simeq \boldsymbol C$である。（別の言い方：任意の$g\in G$に対して$\pi(g)$と可換となる$\mathrm{End}(V)$の元はスカラー写像に限られる。）
+\end{enumerate}
+\end{Lemma}
+\end{frame}
+\begin{frame}
+\frametitle{Schurの補題の逆}
+\begin{proof}
+($1\rightarrow 2$)はSchurの補題そのものである。\\
+($2\rightarrow 1$)を背理法により示す。
+$V$を可約であるとする。
+すると$V$は二つ以上の$G$不変部分空間の直和となる。それぞれ$W_1,W_2,\cdots$とする。
+このとき演算子$P_{W_1}:=1_{W_1}\oplus 0_{W_2} \oplus \cdots \oplus 0_{W_n} \oplus \cdots$について考える。
+任意の$v\in V$は$v=w_1+w_2+\cdots,\ (w_i \in W_i)$の形に一意に表されるが、$P_{W_1} v = w_1$となり
+これは射影演算子であることがわかる。
+このとき、
+\begin{align*}
+P_{W_1}\pi(g) v 
+&= P_{W_1} (\pi|_{W_1}(g) w_1 +\pi|_{W_2}(g) w_2 + \cdots ) \\
+&=  P_{W_1}\pi|_{W_1}(g) w_1 + P_{W_1}\pi|_{W_2}(g) w_2 + \cdots  \\
+&=  \pi|_{W_1}(g) w_1 + 0 + \cdots  \\ 
+&= \pi(g)  w_1 \\
+&=  \pi(g) P_{W_1} v
+\end{align*}
+が成立する（三つ目の等号では$W_i$が$G$不変部分空間であることが使用されている。）。
+すなわち$P_{W_1} \in \mathrm{End}_G(V)$である。
+一方$P_{W_1}$は$V$の恒等写像$I_V$のスカラー倍ではない。
+すなわち$\mathrm{End}_G(V)$の元のうち恒等写像のスカラー倍でないものが見つかった。
+\end{proof}
+\end{frame}
+
+\begin{frame}
+\frametitle{有限群の表現のユニタリ性}
+有限群$G$の$\boldsymbol C$上内積空間$V$に対する表現を考える。
+
+\begin{Theorem}
+有限群$G$の任意の表現$(\pi,V)$はユニタリ表現である。
+\end{Theorem}
+\begin{proofs}
+有限群$G$の表現$(\pi,V)$を考える。
+$G=\{ g_1,g_2,\cdots, g_n \}$とする。
+$V$における任意の内積$\langle , \rangle_1$
+（ユニタリ表現となる条件を満たしている必要がないが、内積の要件を満たす必要は当然ある）
+を一つ定める。
+ここからユニタリ表現となる条件を満たす内積を構成できることを示す。
+ベクトル空間における形式$\langle ,\rangle : V\times V \rightarrow \boldsymbol C$を
+\begin{align*}
+\forall v,w \in V : \langle v,w \rangle = \sum_{i=1}^n \langle \pi(g_i) v , \pi(g_i) w \rangle_1 
+\end{align*}
+により定義する。
+任意の$v\in V$に対して
+$$\langle v,v \rangle = \sum_{i=1}^n \langle \pi(g_i) v , \pi(g_i) w \rangle_1$$
+である。
+\end{proofs}
+\end{frame}
+\begin{frame}
+\begin{proof}
+また、$v\neq0$ならば$\forall g \in G:\pi(g)v \neq 0$であり（$\pi(g) \in GL(V)$なので）、
+$\forall g \in G: \langle \pi(g) , \pi(g) \rangle_1 >0$であることが分かる（$\langle,\rangle_1$は内積であり非退化正定値性をもつので）。
+したがって、$v\neq0$ならば$\langle v,v \rangle > 0$であり、$\langle ,\rangle$が非退化正定値性を持つことが分かる。
+さらに$\pi(g)$が線形写像であることから$\langle,\rangle$の双線形性やエルミート性等も容易に示せる。
+したがって$\langle , \rangle$は内積となる。
+また、任意の$v,w \in V ,  g \in G $に対して、
+\begin{align*}
+ \langle \pi(g) v, \pi(g) w \rangle 
+&= \sum_{i=1}^n \langle \pi(g_i)\pi(g)v , \pi(g_i)\pi(g)w \rangle_1 \\
+&= \sum_{i=1}^n \langle \pi(g_i g)v , \pi(g_i g)w \rangle_1   \\
+&= \sum_{i=1}^n \langle \pi(g_i)v , \pi(g_i)w \rangle_1   \\
+&= \langle  v,  w \rangle
+\end{align*}
+が成立する、すなわちユニタリ条件が満たされている。
+\end{proof}
+\end{frame}
+
+\begin{frame}
+\frametitle{有限群の有限次元表現が完全可約であること}
+有限群の表現がユニタリ表現であることと、
+有限次元ユニタリ表現が完全可約であることを用いると、
+次の定理が従う。
+\begin{theorem}
+有限群の有限次元表現は完全可約である。
+\end{theorem}
+\end{frame}
+
+\begin{frame}
+\frametitle{Schurの直交定理}
+大直交定理とも呼ばれるSchurの直交定理を示す。
+表現の指標表の作成に役立つ指標直交性定理を導くことが出来る、有用な定理である。
+
+\begin{theorem}[Schurの直交定理]
+有限群$G$に対して$(\pi_1,V_1)$と$(\pi_2,V_2)$がそれぞれ
+有限次元完全可約表現であるとする。
+ベクトル空間$V_1,V_2$に対してある基底をそれぞれ定めて、
+その基底を用いた$\pi_i(g)$の行列表示を$a^i_{jk}$とする。
+このとき、
+\begin{enumerate}
+\item $\pi_1 \not\simeq \pi_2$（$G$同型ではない、すなわち表現が同等ではないの意味）
+ならば、
+$$
+\frac{1}{|G|} \sum_{g \in G} a^1_{jk}(g)   a^2_{ml}(g^{-1}) = 0
+$$
+が成立する。
+\item 
+$$
+\frac{1}{|G|} \sum_{g \in G} a^1_{jk}(g)  a^1_{ml}(g^{-1}) = \frac{\delta_{km}\delta_{jl} }{\mathrm{dim}V_1} 
+$$
+\end{enumerate}
+\end{theorem}
+
+\end{frame}
+
+\begin{frame}
+\begin{proofs}
+$B \in \mathrm{Hom}(V_2,V_1)$とする。
+$A:= \frac{1}{|G|}\sum_{g \in G} \pi_1(g) B \pi_2(g)^{-1}$
+とおくと$A \in  \mathrm{Hom}(V_2,V_1)$
+である。
+ここで任意の$g' \in G$に対して、
+\begin{align*}
+\pi_1(g') A 
+&= \frac{1}{|G|}\sum_{g \in G} \pi_1(g' )\pi_1(g) B \pi_2(g)^{-1} \\
+&= \frac{1}{|G|}\sum_{g \in G} \pi_1(g' g) B \pi_2(g^{-1}) \\
+&= \frac{1}{|G|}\sum_{g'' \in G} \pi_1(g'') B \pi_2((g'^{-1}g'')^{-1}) \\
+&= \frac{1}{|G|}\sum_{g'' \in G} \pi_1(g'') B \pi_2(g''^{-1} g' ) \\
+&= A \pi_2(g') 
+\end{align*}
+であり、$A$と$G$の作用は可換である。
+\end{proofs}
+\end{frame}
+
+\begin{frame}
+\begin{proofs}
+したがって$A \in \mathrm{Hom}_G(V_2,V_1)$である。
+Schurの補題により$\pi_1\not\simeq\pi_2$のときは$A=0$であり、いずれの基底
+で表示しても行列要素はすべて$0$である。
+定めた基底に対する$A$の行列要素は
+$A_{jl} = \frac{1}{|G|}\sum_{g \in G} \sum_{\mu=1}^{n_1} \sum_{\nu=1}^{n_2}a^1_{j\mu}(g) b_{\mu\nu} a^2_{\nu l}(g^{-1})$
+である（$n_i = \mathrm{dim}V_i$とした。$b_{\mu\nu}$は同基底による$B$の行列要素）。
+上記の主張は$B$によらないがとくに行列要素が
+$b_{\mu\nu} = \delta_{\mu k } \delta_{\nu m}$
+となるように選ぶと、
+$$
+0 = \frac{1}{|G|} \sum_{g \in G} a^1_{jk}(g)   a^2_{ml}(g^{-1})
+$$
+が導かれる。\\
+\end{proofs}
+\end{frame}
+
+\begin{frame}
+\begin{proofs}
+次に$\pi_1=\pi_2$で基底も同じにとる（$V_1=V_2=V$とおく。$n=\mathrm{dim}V$とする。）。
+このときSchurの補題より
+$A=\lambda I_V$なる$\lambda(B) \in \boldsymbol C$が存在する。
+定めた基底に対して行列要素は$A_{jl} = \lambda\delta_{jl}$となる。
+先と同様に$B$を行列要素が$b_{\mu\nu} = \delta_{\mu k } \delta_{\nu m}$
+となるように選ぶと、
+（このときの$\lambda$を$\lambda(\{b_{\mu\nu}=\delta_{\mu k }\delta_{\nu m}\})$と書く。）
+\begin{align*}
+\lambda(\{b_{\mu\nu}=\delta_{\mu k }\delta_{\nu m}\}) \delta_{jl} 
+&= \frac{1}{|G|} \sum_{g \in G} a^1_{jk}(g)   a^1_{ml}(g^{-1}) \\
+&= \frac{1}{|G|} \sum_{g \in G} a^1_{jk}(g)   (a^1)^{-1}_{ml}(g) 
+\end{align*}
+となる。
+\end{proofs}
+\end{frame}
+
+\begin{frame}
+\begin{proof}
+行列のトレースを取る操作を行うと、
+\begin{align*}
+\lambda(\{b_{\mu\nu}=\delta_{\mu k }\delta_{\nu m}\}) \sum_{i=1}^n \delta_{ii}
+&=
+\sum_{i=1}^n \frac{1}{|G|} \sum_{g \in G} a^1_{ik}(g)   (a^1)^{-1}_{mi}(g)  \\
+&=
+\frac{1}{|G|} \sum_{g \in G} \delta_{km} 
+=
+\delta_{km}
+\end{align*}
+よって、
+
+\begin{align*}
+\lambda(\{b_{\mu\nu}=\delta_{\mu k }\delta_{\nu m}\}) = \frac{\delta_{km}}{n} 
+\end{align*}
+
+以上より、
+\begin{align*}
+\frac{1}{|G|} \sum_{g \in G} a^1_{jk}(g)  a^1_{ml}(g^{-1}) = \frac{\delta_{km}\delta_{jl} }{n} 
+\end{align*}
+が成立する。
+\end{proof}
+\end{frame}
+
+\begin{frame}
+有限群$G$の有限次元表現$(\pi,V)$はユニタリ表現であるから、
+ユニタリ条件を満たすように$V$に内積を導入することが出来る。
+とくに基底としてこの内積から定まる正規直交基底を選ぶと、
+この基底による表示では任意の$g\in G$に対して$\pi(g)$がユニタリ行列となる。
+すなわち$\pi(g)$の行列要素を$a_{ij}(g)$とすると、
+$a_{ij}(g^{-1}) =a^{-1}_{ij}(g)= (a_{ji}(g))^*$
+が成立する。（第一等号は$\pi(g)$の逆写像が$\pi(g^{-1})$であることを用いている。）
+Schurの直交定理と合わせて次の系が成立する。
+\begin{corollary}
+有限群$G$の有限次元表現$(\pi,V)$を考える。
+ユニタリ条件を満たすように$V$に内積を導入し、
+基底として内積から定まる正規直交基底を選ぶ。
+$\pi(g)$の行列要素を$a_{ij}(g)$とすると、
+$$
+\frac{1}{|G|} \sum_{g \in G} a^1_{jk}(g)  (a^1_{lm}(g) )^*= \frac{\delta_{km}\delta_{jl} }{\mathrm{dim}V_1} 
+$$
+が成立する。
+\end{corollary}
+\end{frame}
+
+\section{群上の関数と群代数}
+\begin{frame}
+\frametitle{群代数}
+$\mathcal{A}(G)$を$G$上の複素数値関数の集合とする。
+これらは$\mathbb{C}$上線形空間と見なすことができる。
+その次元は$\mathrm{dim}\mathcal{A}(G) = |G|$である。
+
+これらは畳み込みを積と見なすことにより、
+$\mathbb{C}$上代数とみなすことができる。
+$f_1,f_2 \in \mathcal{A}(G)$に対して、
+$f_1$の$f_2$との畳み込み$f_1 * f_2$は
+\begin{align*}
+(f_1 * f_2)(g) := \sum_{g_0 \in G} f_1(gg_0^{-1}) f_2(g_0)
+\end{align*}
+で定義される。
+$\mathbb{C}$上代数としての$\mathcal{A}(G)$は$G$の群代数と呼ばれる。
+
+Schurの直交定理で出てくる$\pi(g)$の行列要素$a_{ij}(g)$に対して、
+$a_{ij} \in \mathcal{A}(G)$である。
+
+$\mathcal{A}(G)$自体を$\mathcal{A}(G)$加群と見なすことができる。
+$G$の表現論を$\mathcal{A}(G)$加群で考えることが可能である。
+\end{frame}
+
+\begin{frame}
+\frametitle{群代数上の内積}
+\begin{definition}
+$\mathcal{A}(G)$上の内積$\langle \cdot , \cdot \rangle$を
+\begin{align*}
+\langle f_1, f_2 \rangle = |G|^{-1} \sum_{g \in G} f_1(g) \bar{f_2(g)}  \ \ \forall f_1, f_2 \in \mathcal {A} (G)
+\end{align*}
+で定義する。
+\end{definition}
+ユニタリ表現に対するSchurの直交定理の結論は内積を用いると
+\begin{align*}
+\langle a^{1}_{jk} a^1_{lm}\rangle = \frac{\delta_{km}\delta_{jl}}{\mathrm{dim}V_1}
+\end{align*}
+と書くことができる。
+\end{frame}
+
+\begin{frame}
+\begin{corollary}[Schurの直交定理の系]
+$(\pi_1,V_1),(\pi_2,V_2)$を$G$の既約表現とし、$\pi_1 \neq \pi_2$とする。
+$\pi_1$の行列要素たちが張る$\mathcal{A}(G)$の部分空間
+$\mathrm{Span}\{ a^{1}_{ij} | 1 \le i,j \le \mathrm{dim}V_1\}$
+と
+$\pi_2$の行列要素たちが張る$\mathcal{A}(G)$の部分空間
+$\mathrm{Span}\{ a^{2}_{ij} | 1 \le i,j \le \mathrm{dim}V_1\}$
+は直交する。
+\end{corollary}
+\end{frame}
+
+\begin{frame}
+\frametitle{群代数上の正則表現}
+群代数$\mathcal{A}(G)$を表現空間とする$G$の表現は正則表現と呼ばれる。
+右正則表現
+\begin{align*}
+R_{g'}f(g) = f(gg')
+\end{align*}
+左正則表現
+\begin{align*}
+L_{g'}f(g) = f(g'^{-1}g) 
+\end{align*}
+\end{frame}
+
+\begin{frame}
+$G$を有限群、
+$\{ \pi_1 , \pi_2, \cdots \pi_j \}$を$G$のすべての互いに同値ではない既約表現の集合とする。
+$n_j = \mathrm{dim}\pi_j$
+\end{frame}
+
+\section{群環と群代数}
+\begin{frame}
+\frametitle{$\mathbb{C}G$環}
+\begin{definition}
+群環$RG$は$R$を環、$G$を群として、
+$\sum_{g \in G} x_g g$
+の形の線形和からなる集合である。
+積構造は$R$の積と$G$の積が組み合わさってできる。
+\end{definition}
+\begin{definition}
+$R$が$K$の場合を群環$KG$あるいは群代数$KG$という。
+\end{definition}
+特に $K=\mathbb{C}G$の群代数を考えることが多い。
+$G$の表現論は$\mathbb{C}(G)$加群としての
+群代数 $\mathbb{C}G$を考えることで議論できる。
+\end{frame}
+
+\section{誘導表現}
+
+\begin{frame}
+
+ \frametitle{誘導表現の定義}
+ 誘導表現の定義をいくつか述べる。
+ これらは等価になることもあるが、完全に等価なものではない。
+ \begin{enumerate}
+  \item 加群のテンソル積を用いた代数的な定義
+  \item 群上の関数空間を用いた解析的な定義
+ \end{enumerate}
+
+\end{frame}
+
+
+\begin{frame}
+ \frametitle{誘導表現の定義その１}
+まず、加群のテンソル積を用いた代数的な定義を紹介する。
+
+ \begin{definition}
+  $H$を$G$の部分群とし、
+  $\left(\pi , V\right)$を$H$の表現とする時、
+  $\tau$の$H$から$G$への誘導表現を、表現空間としては、
+  \begin{align}
+  \operatorname{Ind}_{H}^{G} \pi =\mathbb{C} G \otimes_{\mathbb{C}H} V
+  \end{align} 
+  と置き、表現の作用素としては$\mathbb{C}G$への左からの積を考えることで定義する。
+ \end{definition}
+補足をすると、上記の定義で出てくる、$\mathbb{C}G$は
+$(\mathbb{C}G,\mathbb{C}H)$両側加群、
+$V$は左$\mathbb{C}H$加群と見なされている。
+\end{frame}
+
+\begin{frame}
+ \frametitle{誘導表現の定義その２}
+次に関数空間を用いた解析的な定義を紹介する。
+
+ \begin{definition}
+  $G$を局所コンパクト群、$H$をその閉部分空間とする。
+  $\left(\pi , V\right)$を$H$の連続なユニタリ表現とする時、
+  関数空間$L_\pi(G)$を
+  \begin{align}
+  L_{\pi}(G)=\left\{f: G \rightarrow V | f(g h^{-1})=\pi(h) f(g) , \forall h \in H, \forall g \in G, f \in L^2(G/H)\right\}
+  \end{align} 
+  と定義する。
+  この空間に対する$G$の表現を左正則移動
+  \begin{align}
+  (L_gf)(x) = f(g^{-1}x)
+  \end{align}
+  で定めた時、
+  これを$\pi$の$G$への誘導表現と呼び、
+  $\mathrm{Ind}^{G}_{H}\pi$
+  で表す。
+ \end{definition}
+定義中の$f\in L^2(G/H)$について補足を行う。
+$f(g) \in V$の$L^2$ノルム$|\cdot|$に対して、$|f(g)|=|f(gh)|,\ \forall h \in H$
+である、すなわちノルムは$H$による剰余類中で不変である。
+したがって、$|f(g)|^2$を商空間$G/H$上で定義される不変測度を用いて全空間積分
+するという行為が意味を持つ。
+$f\in L^2(G/H)$とはこの全空間積分が有限値になる関数を考えていることを表す。
+\end{frame}
+
+
+
+
+
+
+\end{document}
