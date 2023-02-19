@@ -1,4 +1,1250 @@
-\documentclass{article}
+\documentclass[dvipdfmx,12pt,a4paper,uplatex]{jsarticle}
+\usepackage[truedimen,
+            left=15truemm,
+            right=15truemm,
+            top=15truemm,
+            bottom=30truemm]{geometry}
+\usepackage[utf8]{inputenc}
+\usepackage[ipaex]{pxchfon}
+\usepackage{amsmath,amssymb,amsthm,epic,eepic,multicol,ascmac}
+\usepackage[dvipdfmx]{graphicx}
+\usepackage[usenames]{color}
+\usepackage[dvipdfmx,colorlinks=true,linkcolor=blue,%
+citecolor=blue,
+bookmarks=true,%
+bookmarksnumbered=true,%
+pdftitle={},%
+pdfsubject={},%
+pdfauthor={},%
+pdfkeywords={}]
+{hyperref}
+\usepackage{pxjahyper}
+\theoremstyle{plain}
+\newtheorem{thm}{定理}
+\newtheorem{prop}[thm]{命題}
+\newtheorem{lem}[thm]{補題}
+\newtheorem{rem}[thm]{注意}
+\newtheorem{cor}[thm]{系}
+\newtheorem{ex}[thm]{例} 
+\newtheorem{fact}[thm]{事実} 
+\theoremstyle{definition}
+\newtheorem{defn}[thm]{定義}
+\usepackage{wrapfig}
+%
+%
+%定義
+\newcommand{\divergence}{\mathrm{div}\,}  %ダイバージェンス
+\newcommand{\grad}{\mathrm{grad}\,}  %グラディエント
+\newcommand{\rot}{\mathrm{rot}\,}  %ローテーション
+\def\hsymb#1{\mbox{\strut\rlap{\smash{\Huge$#1$}}\quad}}
+%タイトル
+
 \begin{document}
-Hello, world!
+\title{KdV階層における双Hamiltonian構造と可積分構造}
+\author{adhara\_mathphys}
+\date{\today}
+\maketitle
+\begin{abstract}
+非線形波動を記述する非線形偏微分方程式の一つであるKdV方程式はソリトン解を有する可積分系の代表的な例として知られる\cite{Wiki}．
+本ノートではKdV階層のLax形式から出発して，
+KdV階層に見られる双Hamiltonian構造及び可積分構造について解説する．
+議論の流れは概ね高崎\cite{可積分の数理}に従っているが，
+行間を補うものとしてManin\cite{Manin}やGardner\cite{Gardner}を参照している．
+\end{abstract}
+\tableofcontents
+\newpage
+
+\section{KdV階層のLax形式}
+\subsection{Lax方程式}
+$X$を適当な一次元空間領域，$T$を適当な時間領域とし，．
+$\{X,T\}$で定義されている場$u$を考える．
+
+以下では
+\begin{align}
+\partial_x := \frac{\partial}{\partial x}
+\end{align}
+と記す．
+
+演算子$A,B$を
+\begin{align}
+A &= \sum_{i=0}^N a_i(u,u_x,u_{xx},\cdots) (\partial_x)^i , \nonumber \\
+B &= \sum_{i=0}^N b_i(u,u_x,u_{xx},\cdots) (\partial_x)^i
+\end{align}
+のように係数が場及びその高次微分の関数となっている位置微分演算子とする．
+
+このとき，
+\begin{align}
+\frac{\partial A}{\partial t} = [B,A] = BA -AB
+\end{align}
+となっているような微分方程式をLax方程式という．
+
+\subsection{擬微分作用素}
+$\alpha\in \mathbb{Z}$として，形式的に
+\begin{align}
+P = \sum_{i=0}^{\infty} f_i(x) \partial_x^{\alpha-i}
+\end{align}
+で表される線形演算子$P$を擬微分演算子という．
+
+擬微分作用素においては$\cdot$を演算子の積として，
+\begin{align}
+\partial_x^n \partial_x^m 
+&= \partial^{n+m}  \\
+\partial_x^{n} \cdot f  
+&=
+\sum_{k=0}^\infty 
+\begin{pmatrix} n \\ k \end{pmatrix}
+\partial_x^k(f) \partial_x^{n-k}
+\end{align}
+の関係が成立する．
+ただし，
+\begin{align}
+\begin{pmatrix} n \\ k \end{pmatrix} 
+=
+\frac{n(n-1)\cdots (n-k+1)}{k!}
+\end{align}
+である．
+
+擬微分作用素
+\begin{align}
+P =
+\sum_{i=0}^{\infty} f_i(x) \partial_x^{\alpha-i}
+\end{align}
+に対して，
+\begin{align}
+P_+ =
+\sum_{i=0}^{\alpha} f_i(x) \partial_x^{\alpha-i}
+\end{align}
+\begin{align}
+P_i =
+\sum_{i=\alpha+1}^{\infty} f_i(x) \partial_x^{\alpha-i}
+\end{align}
+と定義する．
+このとき，
+\begin{align}
+P = P_+ + P_-
+\end{align}
+が成立する．
+
+\paragraph{擬微分作用素の作用の仕方\\}
+指数関数$e^{kx}$に対して
+\begin{align}
+\partial_x^{\alpha} (e^{kx}) = k^{-\alpha} e^{kx}
+\end{align}
+のように作用するものとする．
+
+\subsection{Schr\"odinger作用素から定まる擬微分作用素}
+Schr\"odinger作用素
+\begin{align}
+L = \partial^2_x + u
+\end{align}
+を考える．
+
+このとき，$n,m\in\mathbb{Z}$に対して，
+\begin{align}
+L^{(2n-1)/2} L^{(2m-1)/2} = L^{n+m-1}
+\end{align}
+が矛盾なく成立するように
+擬微分作用素の系列
+\begin{align}
+L^{(2n-1)/2} \ \ (n,m\in\mathbb{Z})
+\end{align}
+を定義することができる．
+
+以下の議論でLax方程式
+\begin{align}
+\frac{\partial L}{\partial t_n} = 
+\left[\left(L^{(2n-1)/2}\right)_+,L\right] \ \ (n=1,2,\cdots)
+\end{align}
+について考察するが，
+その準備として次の節ではそのためにGelfand--Dickey多項式というものを導入する．
+
+\subsection{Gelfand--Dickey多項式}
+擬微分作用素$L^{(2n-1)/2} \ \ (n\in\mathbb Z)$に対して
+\begin{align}
+R_n := \mathrm{Res}(L^{(2n-1)/2})
+\end{align}
+をGelfand-Dickey多項式という．
+ただし，
+$\mathrm{Res}(L^{(2n-1)/2})$とは
+$L^{(2n-1)/2}$を展開したときの
+$\partial_x^{-1}$の
+係数にあたる$u,u_x,u_{xx}\cdots$の多項式のことである．
+すなわち，
+\begin{align}
+L^{(2n-1)/2}  =
+\partial_x^{2n-1}+\cdots+R_n(u,u_x,\cdots)\partial_x^{-1} + \cdots
+\end{align}
+である．
+特に，
+\begin{align}
+R_0 = 1
+\end{align}
+がすぐに導かれる．
+
+ここで，
+\begin{align}
+L^{(2n-1)/2}  
+&=
+\partial_x^{2n-1}+\cdots
++R_n(u,u_x,\cdots)\partial_x^{-1} \nonumber \\
+&+
+P_n(u,u_x,\cdots)\partial_x^{-2} 
++Q_n(u,u_x,\cdots)\partial_x^{-3} 
++S_n(u,u_x,\cdots)\partial_x^{-4} 
++ \cdots
+\end{align}
+とおくと，
+\begin{align}
+L^{(2n+1)/2} = L^{(2n-1)/2} L = L L^{(2n-1)/2}  
+\end{align}
+における
+$\partial_x^{-2}$の項の係数比較より
+\begin{align}
+-u_x R_n + uP_n + S_n
+= uP_n + \partial_x^2(P_n) + 2\partial_x(Q_n) + S_n
+\end{align}
+が成立する．
+すなわち，
+\begin{align}
+\partial_x(Q_n) = 
+-\frac12 \left(u_x R_n + \partial_x^2(P_n) \right)
+\end{align}
+となる．
+一方，$\partial_x^{-1}$の項の係数比較より
+\begin{align}
+R_{n+1} =
+u R_n  + Q_n 
+= uR_n + \partial_x^2(R_n) + 2\partial_x(P_n) + Q_n
+\end{align}
+であるから，
+\begin{align}
+\partial_x(P_n) &= -\frac12 \partial_x^2(R_n) 
+\end{align}
+となり，
+\begin{align}
+\partial_x(R_{n+1}) 
+&= u_x R_n + u\partial_x(R_n) + \partial_x(Q_n) \nonumber\\
+&=
+u_x R_n + u\partial_x(R_n)
+-\frac12 \left(u_x R_n + \partial_x^2(P_n) \right) \nonumber \\
+&=
+\left(\frac14 \partial_x^3 + u\partial_x + \frac12 u_x \right)R_n
+\end{align}
+が導かれる．
+これをLenardの関係式という．
+Lenardの関係式は
+\begin{align}
+R_{n+1}
+=
+\frac14 \partial_x^2(R_n) + uR_n 
+- \frac12 \int  u_x R_n dx
+\end{align}
+とも書くことができる．ただし，右辺の不定積分については定数項を0とする．
+$R_0=1$から開始して次々と正の次数のGelfand--Dickey多項式
+$R_n\ (n=1,2,\cdots)$を求めることができる．
+例えば，
+\begin{align}
+R_1 &= \frac12 u,\\
+R_2 &= \frac{3}{8}u^2 + \frac{1}{8}u_{2x}  ,\\
+R_3 &= \frac{5}{16}u^3 +\frac{5}{16}uu_{2x}
++\frac{5}{32}(u_{x})^2 +\frac{1}{32} u_{4x}
+ %R_4 &= \frac{35}{128}u^4 + u^2u_{2x} + u(u_x)^2
+%+(u_{2x})^2 + u_xu_{3x}
+%+ uu_{4x}+\frac{1}{128}u_{6x}
+\end{align}
+のように求めることができる．
+ただし，$u_{nx}:=\partial^n_x(u)$という省略記法を導入した．
+$u_{nx}$が``$n+2$次"であるとすると，
+$R_n$が斉次$2n$次であることがわかる．
+
+\subsection{KdV階層のLax形式}
+まず，
+\begin{align}
+\left[\left(L^{(2n-1)/2}\right)_+,L\right]
+&=
+\left[\left(L^{(2n-1)/2}\right)-\left(L^{(2n-1)/2}\right)_-,L\right]
+\nonumber \\
+&=
+\left[\left(L^{(2n-1)/2}\right),L\right]
+-\left[\left(L^{(2n-1)/2}\right)_-,L\right] \nonumber\\
+&=
+-\left[\left(L^{(2n-1)/2}\right)_-,L\right] \nonumber \\
+&=
+-\left[R_{n}\partial_x^{-1} + P_n\partial_x^{-2}+ Q_n\partial_x^{-3}
+\cdots
+,\partial_x^2 + u\right] 
+\end{align}
+が成立する．
+上式においては左辺が$\partial_{x}^{-n} \ \ (n=1,2,\cdots)$を
+含まないことから，
+\begin{align}
+\left[\left(L^{(2n-1)/2}\right)_+,L\right]
+&=
+2\partial_x(R_n)
+\end{align}
+となることがわかる．
+Lenardの関係式を用いることによりLax方程式は$u$に関する非線形波動方程式
+\begin{align}
+\frac{\partial u}{\partial t_n} 
+= 2\partial_x(R_n)
+= 2\left(\frac14 \partial_x^3 + u\partial_x + \frac12 u_x \right)
+R_{n-1}
+\end{align}
+となる．
+
+特に$n=2$のLax方程式は$u$に関する非線形波動方程式
+\begin{align}
+\frac{\partial u}{\partial t_2} 
+=
+2\partial_x \left(\frac{1}{8}u_{xx} +\frac{3}{8}u^2 \right)
+= \frac{1}{4}u_{xxx} + \frac{3}{2}uu_x
+\end{align}
+となり，KdV方程式に帰着する．
+このことから，各$n=3,4,\cdots$のLax方程式から導かれる
+$u$に関する非線形波動方程式を高次KdV方程式という．
+また，$n=1,2,\cdots$におけるLax方程式あるいは$u$に関する非線形波動方程式
+を同時に満たす力学系をKdV階層という．
+このLax方程式を用いたKdV階層の定式化をKdV階層のLax形式という．
+
+\subsection{KdV階層に付随する無限個の保存則}
+上記のLax方程式が成立するとき，$n,m=1,2,\cdots$に対して，
+\begin{align}
+\frac{\partial L^{(2m-1)/2}}{\partial t_n} = 
+\left[\left(L^{(2n-1)/2}\right)_+,L^{(2m-1)/2}\right]
+\end{align}
+が成立する．
+この式は
+\begin{align}
+\mathrm{Res}\left(\frac{\partial L^{(2m-1)/2}}{\partial t_n}\right)
+=
+\frac{\partial \mathrm{Res}\left(L^{(2m-1)/2}\right)}{\partial t_n}
+=
+\frac{\partial R_m}{\partial t_n}
+\end{align}
+より，
+\begin{align}
+\frac{\partial R_m}{\partial t_n} 
+= 
+\mathrm{Res}\left[\left(L^{(2n-1)/2}\right)_+,L^{(2m-1)/2}\right]
+\end{align}
+に帰着する．
+
+一般に$a,b$を$u,u_x,u_{xx},\cdots$の多項式としたときに，
+$a\partial_x^m ,b\partial_x^n$という二つの擬微分作用素
+に対してその交換子は
+\begin{align}
+\left[a\partial_x^m , b\partial_x^n \right] 
+=
+\sum_{k=0}^\infty 
+\left\{
+a
+\begin{pmatrix} m \\ k \end{pmatrix}
+\partial_x^k(b) 
+-
+b
+\begin{pmatrix} n \\ k \end{pmatrix}
+\partial_x^k(a) 
+\right\}
+\partial_x^{m+n-k}
+\end{align}
+であるから，
+\begin{align}
+\mathrm{Res}
+\left[a\partial_x^m , b\partial_x^n \right] 
+=
+\begin{pmatrix} m \\ m+n+1 \end{pmatrix}
+a\partial_x^{m+n+1}(b) 
+-
+\begin{pmatrix} n \\ m+n+1 \end{pmatrix}
+\partial_x^{m+n+1}(a)b
+\end{align}
+となる．ただし，式中に出てくる二項係数は
+$m+n+1<0$で$0$になるもの解釈する．
+$m+n+1>0$のとき，
+\begin{align}
+\begin{pmatrix} n \\ m+n+1 \end{pmatrix}
+&=
+\frac{n(n-1)\cdots(n-(n+m+1)+1)}{(m+n+1)!}
+=
+\frac{n(n-1)\cdots(-m)}{(m+n+1)!} \nonumber \\
+\begin{pmatrix} m \\ m+n+1 \end{pmatrix}
+&=
+\frac{m(m-1)\cdots(m-(n+m+1)+1)}{(m+n+1)!}
+=
+\frac{m(m-1)\cdots(-n)}{(m+n+1)!} 
+\end{align}
+となり，
+\begin{align}
+\begin{pmatrix} n \\ m+n+1 \end{pmatrix}
+=
+(-1)^{m+n+1}
+\begin{pmatrix} m \\ m+n+1 \end{pmatrix}
+\end{align}
+がわかる．
+この関係式は$m+n+1\le0$でも成立する．
+したがって，
+\begin{align}
+\mathrm{Res}
+\left[a\partial_x^m , b\partial_x^n \right] 
+&=
+\begin{pmatrix} m \\ m+n+1 \end{pmatrix}
+\left\{
+a\partial_x^{m+n+1}(b) 
+-
+(-1)^{m+n+1}
+\partial_x^{m+n+1}(a)b
+\right\} \nonumber\\
+&=
+\begin{pmatrix} m \\ m+n+1 \end{pmatrix}
+\partial_x
+\left\{
+\sum_{k=0}^{m+n}(-1)^k \partial_x^{k}(a) \partial_x^{m+n-k}(b)
+\right\}
+\end{align}
+となる．
+すなわち，
+\begin{align}
+\mathrm{Res}
+\left[a\partial_x^m , b\partial_x^n \right] 
+=
+\partial_x(Q)
+\end{align}
+となる$u,u_x,u_{xx},\cdots$の多項式$Q$が存在する．
+
+以上より，
+$u,u_x,u_{xx},\cdots$の多項式$J_{m,n}$が存在し，
+\begin{align}
+\mathrm{Res}\left[\left(L^{(2n-1)/2}\right)_+,L^{(2m-1)/2}\right]
+=
+\partial_x(J_{m,n})
+\end{align}
+となることが言える．
+
+これを用いると，
+\begin{align}
+\frac{\partial R_m}{\partial t_n} 
+= 
+\partial_x(J_{m,n})
+\end{align}
+と書くことができる．
+
+両辺を領域$X$で$x$積分すると，
+\begin{align}
+\frac{\partial}{\partial t_n}
+\int_{X} R_m dx = 
+\int_X \partial_x\left( J_{m,n} \right) dx
+= \left[ J_{m,n} \right]_X
+\end{align}
+となる．
+この積分形の保存則は，
+$X$が$S^1$であるとき（周期的境界条件に相当）や，$X$の境界で$u\rightarrow0$
+となるとき（急減少関数を考えることに相当）のときには，
+\begin{align}
+\frac{\partial}{\partial t_n}
+\int_{X} R_m dx = 
+\int_X \partial_x\left( J_{m,n} \right) dx
+= 0
+\end{align}
+となり，
+場$u$から定義される局所的密度汎関数
+\begin{align}
+F_m\{u\} := \int_{X} R_m(u,u_x,u_{xx},\cdots) dx
+\end{align}
+が$t_n$による各時間発展に対して保存量となっていることを表す．
+
+\subsection{汎関数微分で表される漸化式}
+局所的密度汎関数
+\begin{align}
+F\{u\} = \int_X f(u,u_x,u_{xx},\cdots)dx
+\end{align}
+に対して
+変分
+\begin{align}
+\delta F 
+&:= F\{u+\delta u\} - F\{u\} \nonumber\\
+&=
+\int_X 
+\left\{ f(u+\delta u,u_x + (\delta u)_x ,
+u_{xx} + (\delta u)_{xx},\cdots) - f(u,u_x,u_{xx},\cdots) \right\}dx
+\end{align}
+を考える．
+このとき，
+\begin{align}
+\delta F 
+&=
+\int_X 
+\sum_{n=0}^\infty
+\frac{\partial f}{\delta u_{nx}}\partial_x^n(\delta u)\ dx 
++
+\mathcal{O}((\delta u)^2)
+\end{align}
+となる．
+後付けであるが，部分積分をする際の境界項が0になる条件を課す
+\footnote{例えば，$X=\mathbb{R}$であるときに$u_{nx}\infty0$となる急減少函数条件を課したり，$X=S^1$として周期的境界条件を課す}
+と，
+\begin{align}
+\delta F 
+&=
+\int_X 
+\sum_{n=0}^\infty(-\partial_x)^n
+\left(
+\frac{\partial f}{\delta u_{nx}}
+\right)\delta u\ 
+dx 
++
+\mathcal{O}((\delta u)^2)
+\end{align}
+となる．
+積分中に出てくる$\delta u$の係数函数を
+汎関数微分（あるいは変分導関数）と呼び，
+\begin{align*}
+\frac{\delta F}{\delta u}
+\end{align*}
+と書く．
+すなわち，
+\begin{align}
+\frac{\delta F}{\delta u} :=
+\sum_{n=0}^\infty (-\partial_x)^n
+\left(
+\frac{\partial f}{\partial u_{nx}}
+\right)
+\end{align}
+である．
+
+
+% \begin{align}
+% R_{n+1}
+% =
+% \frac14 \partial_x^2(R_n) + uR_n 
+% - \frac12 \int  u_x R_n dx
+% =: K(R_n)
+% \end{align}
+% のように作用素$K$を定める．
+% \begin{align}
+% K(u^n) 
+% &=
+% \frac{1}{4}\partial_x^2(u^n)
+% + u^{n+1} 
+% -\frac{1}{2(n+1)}\int \partial_x(u^{n+1}) \nonumber\\
+% &=
+% \frac{n}{4}\left( (n-1)u^{n-2}(u_x)^2 + u^{n-1} u_{2x} \right)
+% +
+% \frac{2n+1}{2(n+1)}u^{n+1}
+% \end{align}
+% である．
+% 一方，$2n$次の項で$K$の作用により$u^{n+1}$が出てくるのは$u^n$だけである．
+% ここで
+% \begin{align}
+% \frac{\delta u^{n+1}}{\delta u} = u^n
+% \end{align}
+% であるから，
+% \begin{align}
+% R_n \propto 
+% \frac{\delta F_{n+1}}{\delta u}
+% =
+% \sum_{n=0}^\infty (-1)^n\partial_x^n 
+% \left(
+% \frac{\partial R_{n+1}}{\partial u_{nx}}
+% \right)
+% \end{align}
+% とすると{\color{red}（導出を書く）}，
+このとき，
+\begin{align}
+R_n = 
+\frac{2}{2n+1}
+\frac{\delta F_{n+1}}{\delta u}
+\end{align}
+という関係式が成立する．
+この関係式はManin\cite{Manin}のChapter2にある
+Corollary3.9あるいはPropsition3.10の特殊例に相当する．
+
+以下，Manin\cite{Manin}を参考に上式の証明を記す．
+$\delta$を$u$に対する変分を表すものとする．
+また，$\cdot$は演算子の積であることを明記するための記号とする．
+一般的な擬微分作用素間の交換子の$\mathrm{Res}$に対する議論より，
+$u,u_x,u_{xx},\cdots$の多項式
+$Q',Q''$が存在し，
+\begin{align}
+2\delta
+\left(
+\mathrm{Res}(L^{(2n+1)/2})
+\right)
+&=
+2\mathrm{Res}(\delta(L^{(2n+1)/2})) \nonumber \\
+&=
+2\mathrm{Res}
+\left(
+\sum_{i=0}^{2n}L^{i/2}\cdot\delta(L^{1/2})\cdot L^{(2n-i)/2}
+\right)
+\nonumber \\
+&=
+2\mathrm{Res}
+\left(
+\sum_{i=0}^{2n}
+\left\{
+\delta(L^{1/2})\cdot L^{n} 
+- \left[\delta(L^{1/2})\cdot L^{(2n-i)/2}, L^{i/2}\right]
+\right\} 
+\right)
+\nonumber \\
+&=
+2\mathrm{Res}
+\left(
+\sum_{i=0}^{2n}
+\delta(L^{1/2})\cdot L^{n} 
+\right)
++\partial_x(Q') \nonumber \\
+&=
+2(2n+1)\mathrm{Res}
+(
+\delta(L^{1/2})\cdot L^{n} 
+)
++\partial_x(Q')
+\end{align}
+\begin{align}
+(2n+1)
+\mathrm{Res}
+\left(
+\delta(L)\cdot L^{(2n-1)/2}
+\right)
+&=
+(2n+1)
+\mathrm{Res}
+\left(
+\sum_{i=0,1}L^{i/2}\delta(L^{1/2})L^{(2n-i)/2}
+\right) \nonumber \\
+&=
+(2n+1)
+\mathrm{Res}
+\left(
+\sum_{i=0,1}
+\left\{
+\delta(L^{1/2})L^{n}
+-
+\left[\delta(L^{1/2})\cdot L^{(2n-i)/2}, L^{i/2}\right]
+\right\}
+\right) 
+\nonumber \\
+&=
+2(2n+1)
+\mathrm{Res}(\delta(L^{1/2})\cdot L^{n})
++\partial_x(Q'')
+\end{align}
+となる．
+したがって，ある$u,u_x,u_{xx},\cdots$の多項式$Q$が存在し，
+\begin{align}
+\delta 
+\left(
+\mathrm{Res}(L^{(2n+1)/2})
+\right)
+=
+\frac{2n+1}{2} \mathrm{Res}(\delta L\cdot L^{(2n-1)/2})
++\partial_x(Q)
+\end{align}
+となることがわかる．
+これにより，
+\begin{align}
+\delta R_{n+1} 
+=
+\frac{2n+1}{2} R_{n}\delta u
++\partial_x Q
+\end{align}
+となり，
+\begin{align}
+\delta F_{n+1} 
+&= \int_X \delta R_{n+1} dx \nonumber\\
+&= \int_X 
+\left(\frac{2n+1}{2} R_{n}\delta u
++\partial_x (Q) \right)
+dx \nonumber\\
+&= 
+\frac{2n+1}{2}\int_X 
+R_{n}\delta u
+dx 
+\end{align}
+となる．
+以上より，
+\begin{align}
+R_n = 
+\frac{2}{2n+1}
+\frac{\delta F_{n+1}}{\delta u}
+\end{align}
+となる．
+
+\section{Poisson多様体と双Hamiltonian構造}
+\subsection{Poisson多様体}
+$n次元$実多様体$M$を考え，そこの上で関数環$R(M)$が定義されているものとする．
+任意の$A,B,C\in R(M),c_,c_2\in \mathbb{R}$に対して，
+\begin{align}
+&\{A,B \}_{P} + \{B,A\}_{P} = 0 \\
+&\{c_1 A+c_2  B,C\}_{P} = c_1\{A,B\}_{P} + c_2\{A,B\}_{P} \\
+&\{AB,C \}_{P} = \{A,C\}_{P}B + A\{B,C\}_{P} \\
+&\{A,\{B,C\}_{P}\}_{P} + \{B,\{C,A\}_{P}\}_{P} + \{C,\{A,B\}_{P}\}_{P} = 0
+\end{align}
+の性質\footnote{上から交代性，線形性，Leibniz則，Jacobi恒等式と呼ばれる．}
+を持つ二項演算
+\begin{align}
+    \{\cdot,\cdot\}_{P}:R(M) \times R(M) \longrightarrow R(M)
+\end{align}
+が存在するときこの二項演算をPoisson括弧という．
+あるいはこのような演算を備えた多様体をPoisson構造$P$を持つ
+Poisson多様体$M$という．
+
+\subsection{Poisson双ベクトル場}
+線形性やLeibniz則を満たす構造を定義するためには
+微分演算子を用いることができる．
+すなわち，
+$$P^{ij}\in R(M) \ (1\le i,j \le n)$$
+として，
+\begin{align}
+\{A,B\}_{P} := \sum_{i,j=1}^n 
+\frac{\partial A}{\partial x^i} P^{ij}
+\frac{\partial B}{\partial x^j}
+\end{align}
+とすると
+\begin{align}
+\{AB,C\}_{P} 
+&= \sum_{i,j=1}^n 
+\frac{\partial (AB)}{\partial x^i} P^{ij}
+\frac{\partial C}{\partial x^j}
+=
+\sum_{i,j=1}^n
+\left\{
+\frac{\partial A}{\partial x^i} P^{ij}
+\frac{\partial C}{\partial x^j} B
++
+A
+\frac{\partial B}{\partial x^i} P^{ij}
+\frac{\partial C}{\partial x^j} 
+\right\}\nonumber \\
+&=
+\{A,C\}_{P}B + A\{B,C\}_{P}
+\end{align}
+となり，Leibniz則が成立する．
+線形性についても簡単に示すことができる．
+
+さらに交代性が成立するためには，
+\begin{align}
+0=\left\{ A,B\right\}_{P} + \left\{ B,A\right\}_{P} 
+=
+\sum_{i,j=1}^n 
+\frac{\partial A}{\partial x^i} \left(P^{ij}+P^{ji} \right)
+\frac{\partial B}{\partial x^j}
+\end{align}
+が成立する必要がある．
+すなわち，
+\begin{align}
+P^{ij}+P^{ji} = 0
+\end{align}
+が成立する必要がある．
+
+さらにJacobi則が成立するためには，
+\begin{align}
+0
+&=
+\{A,\{B,C\}_{P}\}_{P} 
++ \{B,\{C,A\}_{P}\}_{P} + \{C,\{A,B\}_{P}\}_{P} \nonumber \\
+&=
+\sum_{i,j,k,l=1}^n P^{kl}
+\left\{
+\frac{\partial A}{\partial x^k}
+\frac{\partial}{\partial x^l}
+\left(
+\frac{\partial B}{\partial x^i} P^{ij}
+\frac{\partial C}{\partial x^j}
+\right)
++
+\frac{\partial B}{\partial x^k}
+\frac{\partial}{\partial x^l}
+\left(
+\frac{\partial C}{\partial x^i} P^{ij}
+\frac{\partial A}{\partial x^j}
+\right)
++
+\frac{\partial C}{\partial x^k}
+\frac{\partial}{\partial x^l}
+\left(
+\frac{\partial A}{\partial x^i} P^{ij}
+\frac{\partial B}{\partial x^j}
+\right)
+\right\}  
+\end{align}
+ここで上式において$A$の二階微分に関する項は
+\begin{align}
+&\sum_{i,j,k,l=1}^n P^{kl}
+\left\{
+\frac{\partial B}{\partial x^k}
+\frac{\partial C}{\partial x^i} P^{ij}
+\frac{\partial}{\partial x^l}
+\left(
+\frac{\partial A}{\partial x^j}
+\right)
++
+\frac{\partial C}{\partial x^k}
+P^{ij}
+\frac{\partial B}{\partial x^j}
+\frac{\partial}{\partial x^l}
+\left(
+\frac{\partial A}{\partial x^i} 
+\right)
+\right\} \nonumber \\
+&=
+\sum_{i,j,k,l=1}^n 
+\frac{\partial B}{\partial x^k}
+\frac{\partial C}{\partial x^i}
+\frac{\partial}{\partial x^l}
+\left(
+\frac{\partial A}{\partial x^j}
+\right)
+\left(
+P^{kl}P^{ij} + P^{jk}P^{il}
+\right) \nonumber \\
+&=
+\sum_{i,j,k,l=1}^n 
+\frac{\partial B}{\partial x^k}
+\frac{\partial C}{\partial x^i}
+\frac{\partial}{\partial x^l}
+\left(
+\frac{\partial A}{\partial x^j}
+\right)
+\left(
+P^{kl}P^{ij} - P^{kj}P^{il}
+\right) \nonumber \\
+&=
+\sum_{i,j,k,l=1}^n 
+\frac{\partial B}{\partial x^k}
+\frac{\partial C}{\partial x^i}
+\left\{
+\frac{\partial}{\partial x^l}
+\left(
+\frac{\partial A}{\partial x^j}
+\right)
+-
+\frac{\partial}{\partial x^j}
+\left(
+\frac{\partial A}{\partial x^l}
+\right)
+\right\}
+P^{kl}P^{ij}
+\nonumber \\
+&=0
+\end{align}
+となり消える．$B,C$の二階微分に関する項も同様に消える．
+したがって，Jacobi則が成立する必要条件は
+\begin{align}
+0 
+&=
+\sum_{i,j,k,l=1}^n P^{kl}
+\left(
+\frac{\partial A}{\partial x^k}
+\frac{\partial B}{\partial x^i}
+\frac{\partial C}{\partial x^j}
+\frac{\partial  P^{ij}}{\partial x^l}
++
+\frac{\partial B}{\partial x^k}
+\frac{\partial C}{\partial x^i}
+\frac{\partial A}{\partial x^j}
+\frac{\partial  P^{ij}}{\partial x^l}
++
+\frac{\partial C}{\partial x^k}
+\frac{\partial A}{\partial x^i}
+\frac{\partial B}{\partial x^j}
+\frac{\partial  P^{ij}}{\partial x^l}
+\right)  \nonumber \\
+&=
+\sum_{i,j,k,l=1}^n 
+\frac{\partial A}{\partial x^k}
+\frac{\partial B}{\partial x^i}
+\frac{\partial C}{\partial x^j}
+\left(
+P^{il}\frac{\partial  P^{jk}}{\partial x^l}
++
+P^{jl}\frac{\partial  P^{ki}}{\partial x^l}
++
+P^{kl}\frac{\partial  P^{ij}}{\partial x^l}
+\right)
+\end{align}
+となり，
+\begin{align}
+\sum_{l=1}^n 
+\left(
+P^{il}\frac{\partial  P^{jk}}{\partial x^l}
++
+P^{jl}\frac{\partial  P^{ki}}{\partial x^l}
++
+P^{kl}\frac{\partial  P^{ij}}{\partial x^l}
+\right) \ \ (1\le i,j,k\le n)
+\end{align}
+が成立する必要があることがわかる．
+
+Poisson構造を定める係数$P^{ij}$は2階のテンソル場
+\begin{align}
+P := \sum_{i,j=1}^n P^{ij} \frac{\partial}{\partial x^i} \otimes \frac{\partial}{\partial x^j}
+\end{align}
+の成分とみなすことができる．
+このテンソル場$P$はPoisson双ベクトル場と呼ばれる．
+
+以下の議論では微分演算子によって定まるPoisson構造$P$（およびPoisson双ベクトル場$P$）を考える．
+\subsection{Poisson多様体におけるHamilton系}
+Poisson双ベクトル$P$は余接束$T^*M$から接束$TM$への写像とみなすことができる．
+すなわち，$f\in R(M)$の全微分$df\in T^{*}M$に対して，
+\begin{align}
+P(df) = \sum_{i,j=1}^n P^{ij} \frac{\partial f}{\partial x^i}  \frac{\partial}{\partial x^j}
+\end{align}
+のように作用するとみなすことができる．
+
+$f\in R(M)$によって定まるベクトル場
+\begin{align}
+X^P_f = -P(df) = -\sum_{i,j=1}^n P^{ij} \frac{\partial f}{\partial x^i}  \frac{\partial}{\partial x^j}
+\end{align}
+をHamiltonベクトル場と呼ぶ．
+定義よりPoisson括弧とHamiltonベクトル場の関係として
+\begin{align}
+X^P_g(f) = \{f,g\}_{P}
+\end{align}
+が成立する．
+
+時間発展が（Poisson多様体上の）Hamiltonベクトル場$X_H$によって定まる力学系
+を（Poisson多様体上の）Hamilton系といい，$H \in R(M)$をHamiltonianという．
+すなわち，Hamilton系においては$A\in R(M)$の時間発展が
+\begin{align}
+\frac{dA}{dt} = X^P_H(A) = \{A,H\}_{P} 
+\end{align}
+で与えられる．
+
+\subsection{Poisson多様体における双Hamiltonian構造}
+多様体$M$に対して二つのPoisson構造$P_1,P_2$，
+二つのHamiltonian$H_1,H_2 \in R(M)$が存在し，
+力学系の時間発展が
+\begin{align}
+\frac{dA}{dt} = X^{P_1}_{H_1}(A) = X^{P_2}_{H_2}(A)
+\end{align}
+のように二通りで表されるときに，
+この力学系は双Hamilton系であるとか双Hamiltonian構造を持つという．
+
+双Hamilton系においては
+\begin{align}
+\{H_1,H_2\}_{P_2} &= X^{P_2}_{H_2}(H_1)= X^{P_1}_{H_1}(H_1) =
+\{H_1,H_1\}_{P_1} = 0 \nonumber \\
+\{H_2,H_1\}_{P_1} &= X^{P_1}_{H_1}(H_2)= X^{P_2}_{H_2}(H_2) =
+\{H_2,H_2\}_{P_2} = 0
+\end{align}
+が成立する．
+すなわち，$H_1,H_2$はPoisson構造$P_1,P_2$それぞれについて包合的である．
+\footnote{$A,B\in R(M)$について$\{A,B\}_{P} = 0$であるときPoisson構造$P$について$A,B$が包合的であるという．}
+
+さらに双Hamiltonian構造を拡張し，Hamiltonianの系列$H_0,H_1,\cdots$
+およびHamiltonベクトル場の系列$X_1,X_2,\cdots$が存在し
+\footnote{有限個系列でも無限個系列でも良いものとする}
+，
+\begin{align}
+X_k = X_{H_k}^{P_1} = X_{H_{k-1}}^{P_2} \ \ (k=1,2,\cdots)
+\end{align}
+となっている状況を考える．
+
+このとき，$i=1,2$に対して，
+\begin{align}
+\{H_{k},H_{l}\}_{P_i} = 0 \ \ \ (k,l=0,1,\cdots)
+\end{align}
+が成立することが上と同様の議論により言える．
+すなわち，Hamiltonベクトル場の系列$X_1,X_2,\cdots$が
+定める時間発展
+\begin{align}
+\frac{dA}{dt_k} = X_k(A)
+\end{align}
+同士が可換である\footnote{$t_i$で時間発展してから$t_j$の時間発展をするのと$t_j$で時間発展してから$t_i$の時間発展をするのが等価となる．}
+ことがわかる．
+
+\section{場の配位空間上のPoisson構造}
+一次元の領域$X$上の場$u$を考える．
+微分演算子$P$に対して
+\begin{align}
+\{F,G\}_P 
+:= \int_X \frac{\delta F}{\delta u} 
+P\left(\frac{\delta G}{\delta u} \right) dx
+\end{align}
+によって定まる，場の局所的密度汎関数（の成す環）に対して定義される
+$\{\cdot ,\cdot\}_P$が交代性やJacobi恒等式を満たすとき，
+微分演算子$P$で定まる場の配位空間上のPoisson構造が存在するという．
+場の配位空間は無限次元であることから，このPoisson構造は
+無限次元のHamilton系を定める．
+
+\subsection{$X=S^1$のとき}
+Gardner\cite{Gardner}にしたがって，$X=S^1$のときの議論を行う．
+これは場が周期的境界条件
+\begin{align}
+u(0)=u(2\pi)
+\end{align}
+を満たすことに相当する．
+Fourier級数展開を用いると，$u$のFourier成分を引数とする関数として
+場の局所的密度汎関数を表示することが可能になる．
+
+場$u$のFourier級数展開を
+\begin{align}
+u(x) = \sum_{n=-\infty}^\infty u_n e^{\mathrm i nx}
+\end{align}
+とする．
+このとき，場の局所的密度汎関数
+$F\{u\}=F(\cdots,u_{-1},u_{0},u_1,\cdots)$
+に対して，
+\begin{align}
+\frac{\partial F}{\partial u_n} (\cdots,u_{-1},u_{0},u_1,\cdots)
+=
+\int_0^{2\pi}
+\frac{\delta F}{\delta u}\frac{\partial u}{\partial u_n}
+dx 
+=
+\int_0^{2\pi}
+\frac{\delta F}{\delta u} e^{\mathrm i nx}
+dx
+\end{align}
+が成立する．
+逆変換の式より，
+\begin{align}
+\frac{\delta F}{\delta u}(x)
+= \frac{1}{2\pi}\sum_{n=-\infty}^\infty
+\frac{\partial F}{\partial u_n} e^{-\mathrm i nx}
+\end{align}
+が成立し，
+\begin{align}
+\{F,G\}_P 
+&= \int_0^{2\pi} \frac{\delta F}{\delta u} 
+P\left(\frac{\delta G}{\delta u} \right) dx \nonumber\\
+&=  \sum_{n,m=-\infty}^{\infty}
+P^{n,m}
+\frac{\partial F}{\partial u_n}
+\frac{\partial G}{\partial u_m}
+\end{align}
+となる．ただし，
+\begin{align}
+P^{nm} 
+:=
+\int_0^{2\pi}
+e^{-\mathrm i nx}
+P\left( e^{-\mathrm i mx} \right) dx
+\end{align}
+とした．
+これは前章で出てきたPoisson構造の無限次元版になっているとみなすことができる．
+
+\subsection{場の配位空間上のPoisson構造より定まるHamilton系}
+場の時間発展が
+\begin{align}
+\frac{\partial u}{\partial t} = P
+\left(\frac{\delta H}{\delta u}\right)
+\end{align}
+であるとすると，
+場の局所的密度汎関数の時間発展は
+\begin{align}
+\frac{dA}{dt} 
+&= 
+\int_X \sum_{n=0}^\infty \frac{\partial a}{\partial u_{nx}} 
+\frac{\partial u_{nx}}{\partial t} \nonumber \\
+&= 
+\sum_{n=0}^\infty
+\int_X  \frac{\partial a}{\partial u_{nx}} 
+\frac{\partial^n}{\partial x^n}
+\left(\frac{\partial u}{\partial t}\right)
+\nonumber \\
+&= 
+\sum_{n=0}^\infty
+\int_X (-1)^n\frac{\partial^n}{\partial x^n}
+\left(\frac{\partial a}{\partial u_{nx}} \right)
+P\left(\frac{\delta H}{\delta u} \right)
+\nonumber \\
+&=
+\int_X \frac{\delta A}{\delta u} 
+P\left(\frac{\delta H}{\delta u} \right) \nonumber \\
+&=
+\{A,H \}_P
+\end{align}
+となり，Hamilton系として定式化することが可能である．
+
+\section{KdV階層における双Hamiltonian構造と可積分構造}
+\subsection{KdV階層における双Hamiltonian構造}
+KdV階層を構成する各非線形波動方程式が
+\begin{align}
+\frac{\partial u}{\partial t_n} 
+= 2\partial_x(R_n)
+= 2\left(\frac14 \partial_x^3 + u\partial_x + \frac12 u_x \right)
+R_{n-1}  \ \ (n=1,2,\cdots)
+\end{align}
+となることを示していた．
+微分演算子
+\begin{align}
+P_1 &:= 2\partial_x \\
+P_2 &:= 2\left(\frac14 \partial_x^3 + u\partial_x + \frac12 u_x \right)
+\end{align}
+とすると，
+\begin{align}
+\frac{\partial u}{\partial t_n} 
+= P_1 (R_n)
+= P_2 (R_{n-1})
+\end{align}
+と書くことができる．
+
+ここで，
+\begin{align}
+P_1^{nm}
+&=
+2\int_0^{2\pi}
+e^{-\mathrm i (n+m)x}(-\mathrm i m) dx
+=
+-4\pi\mathrm{i}m\delta_{n+m,0} 
+\end{align}
+となるが，これはJacobi恒等式や交代性の条件を明らかに満たしている．
+
+一方，
+\begin{align}
+P_2^{nm}
+&=
+2\int_0^{2\pi}
+e^{-\mathrm i (n+m)x}
+\left(\frac14 (-\mathrm i m)^3 
++ u (-\mathrm i m) + \frac12 u_x \right) 
+dx \nonumber \\
+&=
+2
+\int_0^{2\pi}
+e^{-\mathrm i (n+m)x}
+\left(\frac14 (-\mathrm i m)^3 
++ \sum_{k=-\infty}^\infty u_k e^{\mathrm i kx} (-\mathrm i m) 
++ \frac12\sum_{k=-\infty}^\infty u_k e^{\mathrm i kx} (\mathrm i k) \right) dx \nonumber \\
+&=
+4\pi\mathrm i
+\left(\frac{1}{4}  m^3 \delta_{n+m,0}
++ \frac{1}{2} u_{n+m} (n-m)  \right)
+\end{align}
+であるが，交代性については
+\begin{align}
+P_2^{mn}+P^{nm}_2
+=
+\pi\mathrm i\left( m^3+n^3\right) \delta_{n+m,0}
+=\pi \mathrm i (m+n)(m^2-mn+n^2) \delta_{n+m,0} = 0
+\end{align}
+から従う．
+Jacobi恒等式については，
+\begin{align}
+&
+\frac{2}{(4\pi\mathrm i)^2}
+\sum_{l=-\infty}^\infty 
+\left(
+P_2^{il}\frac{\partial P_2^{jk}}{\partial u_l}
++
+P_2^{jl}\frac{\partial P_2^{ki}}{\partial u_l}
++
+P_2^{kl}\frac{\partial P_2^{ij}}{\partial u_l}
+\right) \nonumber \\
+&=
+\sum_{l=-\infty}^\infty 
+\Bigg\{
+\left(\frac14  l^3 \delta_{i+l,0}
++ \frac12 u_{i+l}  (i-l)  \right)
+\delta_{j+k,l}(j-k) +
+\left(\frac14  l^3 \delta_{j+l,0}
++ \frac12 u_{j+l}  (j-l)  \right)
+\delta_{k+i,l}(k-i) \nonumber \\
+&+
+\left(\frac14  l^3 \delta_{k+l,0}
++ \frac12 u_{k+l}  (k-l)  \right)
+\delta_{i+j,l}(i-j)
+\Bigg\} \nonumber \\
+&=
+\left(\frac14  (j+k)^3 \delta_{i+j+k,0}
++ \frac12 u_{i+j+k}  (i-(j+k))  \right)(j-k) \nonumber \\
+&+
+\left(\frac14  (k+i)^3 \delta_{i+j+k,0}
++ \frac12 u_{i+j+k}  (j-(k+i))  \right)(k-i) \nonumber \\
+&+
+\left(\frac14  (i+j)^3 \delta_{i+j+k,0}
++ \frac12 u_{i+j+k}  (k-(i+j))  \right)(i-j) \nonumber \\
+&=
+\frac14 \delta_{i+j+k,0}
+\left\{(j+k)^3(j-k) + (k+i)^3(k-i) + (i+j)^3(i-j) \right\}
+\nonumber \\
+&=
+\frac14 \delta_{i+j+k,0}
+\left\{
+  (i+j+k-i)^2(j^2-k^2) 
++ (i+j+k-j)^2(k^2-i^2)  
++ (i+j+k-k)^2(i^2-j^2)  \right\}
+\nonumber \\
+&=
+-\frac12 \delta_{i+j+k,0}(i+j+k)
+(i-j)(j-k)(k-i)
+= 0
+\end{align}
+より従う．
+
+したがって，$P_1,P_2$はそれぞれ場の配位空間上のPoisson構造を定めることができる．
+
+ここで，
+\begin{align}
+H_n:= \frac{2 F_{n+1}}{2n+1} 
+\end{align}
+を導入すると，
+\begin{align}
+R_n=\frac{\delta H_n}{\delta u}
+\end{align}
+より，
+\begin{align}
+\frac{\partial u}{\partial t_n} 
+= P_1\left(\frac{\delta H_n}{\delta u}\right)
+= P_2\left(\frac{\delta H_{n-1}}{\delta u}\right)
+\end{align}
+と書くことができる．
+したがって，Hamiltonianの系列$H_0,H_1,\cdots$やHamiltonベクトル場の系列$X_1,X_2,\cdots$が存在し，
+$A$の$t_1,t_2,\cdots$による時間発展を
+\begin{align}
+\frac{\partial A}{\partial t_n} 
+=
+X_n(A)
+=
+\{A,H_{n} \}_{P_1} = \{A,H_{n-1} \}_{P_2}
+\end{align}
+と書くことができる．
+すなわち，双Hamiltonian構造を持つことがわかる．
+したがって，$i=1,2$に対して，
+\begin{align}
+\{H_{k},H_{l}\}_{P_i} = 0 \ \ \ (k,l=0,1,\cdots)
+\end{align}
+のような包合関係が無限に存在し，
+各$t_1,t_2,\cdots$による時間発展が可換であることがわかる．
+
+\subsection{KdV階層における可積分構造}
+Poisson多様体の特別なものとして$2N$次元シンプレクティック多様体
+がある．
+局所座標$q_1,q_2,\cdots,q_N,p_1,p_2,\cdots,p_N$として，
+\begin{align}
+\{A,B\}:=\sum _{i=1}^N{\biggl (}{\frac  {\partial A}{\partial p_{i}}}{\frac  {\partial B}{\partial q_{i}}}-{\frac  {\partial B}{\partial p_{i}}}{\frac  {\partial A}{\partial q_{i}}}{\biggr )}
+\end{align}
+で定義される$\{\cdot,\cdot\}$はPoisson括弧の性質を満たす．
+この$2N$次元シンプレクティック多様体におけるHamilton系（エネルギー$H$）
+が$N$個の函数的に独立な保存量
+\begin{align*}
+H_1=H,H_2,\cdots, H_N 
+\end{align*}
+をもちかつそれらが包合的である，すなわち，
+\begin{align}
+\{H_i , H_j \} = 0 \ \ (i,j=1,2,\cdots,N)    
+\end{align}
+が成立するときにこれをLiouville可積分系という．
+
+KdV階層が舞台となっている場の配位空間上のPoisson多様体は
+Liouville可積分系が舞台となっているようなシンプレクティック多様体とは異なる．
+KdV階層は，
+多く（特に無数の）包合関係を持つ点でLiouville可積分系に存在する包合関係の類似し，
+また本ノートでは取り扱わなかったが多くの解を見出すことができる仕組みを備えておりこの点でもLiouville可積分系に類似する．
+このようなLiouville可積分系との類似性からKdV階層についても可積分系，
+特に無限次元の可積分系と呼びたくなる．
+KdV階層同様の性質を持っている非線形力学系は沢山見つかっていることから，
+実際にこういった系たちは無限次元可積分系という名前を与えられている．
+
+\addcontentsline{toc}{section}{\bibname}
+\begin{thebibliography}{数字}
+  \bibitem{Wiki}\href{https://ja.wikipedia.org/wiki/KdV方程式}{https://ja.wikipedia.org/wiki/KdV方程式} 
+  \bibitem{可積分の数理} 高崎 金久『解析学百科II 可積分系の数理 第1章 古典可積分系』 朝倉書店（2018）
+  \bibitem{Manin}Y. I. Manin, Algebraic aspects of nonlinear differen- tial equations, J. Soviet Math. 11 (1979), 1-122.．
+  \bibitem{Gardner} C.S. Gardner, Korteweg-de Vries equation and generalizations, IV. The Korteweg-de Vries equation as a Hamiltonian system, J. Math. Phys. 12 (1971), 1548-1551.  
+\end{thebibliography}
 \end{document}
+
